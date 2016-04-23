@@ -77,7 +77,7 @@ while True:
     f_vy = alpha*f_vy + (1-alpha)*vy
     f_vz = alpha*f_vz + (1-alpha)*vz
 
-    print("x=%s, y=%s, z=%s" % (f_vx, f_vy, f_vz))
+    # print("vx=%s, vy=%s, vz=%s" % (f_vx, f_vy, f_vz))
 
     dx = dx + f_vx*dtime
     dy = dy + f_vy*dtime
@@ -87,6 +87,6 @@ while True:
     dy=round(dy, 2)
     dz=round(dz, 2)
 
-    print("x=%s, y=%s, z=%s" % (dx, dy, dz))    
+    print("dx=%s, dy=%s, dz=%s" % (dx, dy, dz))    
 
     lasttime = currtime
