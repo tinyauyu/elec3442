@@ -53,6 +53,18 @@ while True:
     f_y=round(f_y, 2)
     f_z=round(f_z, 2)
 
-    print("x=%s, y=%s, z=%s" % (f_x - init_x, f_y - init_y, f_z - init_z))
+    # print("x=%s, y=%s, z=%s" % (f_x - init_x, f_y - init_y, f_z - init_z))
 
-    
+    dx = f_x-init_x
+    dy = f_y-init_y
+    dz = f_z-init_z
+
+    dtime = (currtime-lasttime)*1000000
+
+    vx = dx * dtime
+    vy = dy * dtime
+    vz = dz * dtime
+
+    print("x=%s, y=%s, z=%s" % (vx, vy, vz))
+
+    lasttime = currtime
