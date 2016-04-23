@@ -40,6 +40,10 @@ f_vx = vx
 f_vy = vy
 f_vz = vz
 
+dx = 0
+dy = 0
+dz = 0
+
 
 while True:
     x, y, z = sense.get_accelerometer_raw().values()
@@ -74,5 +78,11 @@ while True:
     f_vz = alpha*f_vz + (1-alpha)*vz
 
     print("x=%s, y=%s, z=%s" % (f_vx, f_vy, f_vz))
+
+    dx = dx + vx*dtime
+    dy = dy + vy*dtime
+    dz = dz + vz*dtime
+
+    print("x=%s, y=%s, z=%s" % (dx, dy, dz))    
 
     lasttime = currtime
