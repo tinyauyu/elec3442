@@ -16,6 +16,13 @@ from sense_hat import SenseHat
 
 sense = SenseHat()
 
+f_x, f_y, f_z = sense.get_accelerometer_raw().values()
+f_x=round(x, 0)
+f_y=round(y, 0)
+f_z=round(z, 0)
+
+alpha = 0.2
+
 while True:
     x, y, z = sense.get_accelerometer_raw().values()
 
@@ -23,4 +30,8 @@ while True:
     y=round(y, 0)
     z=round(z, 0)
 
-    print("x=%s, y=%s, z=%s" % (x, y, z))
+    f_x = alpha*f_x + (1-alpha)*x
+    f_y = alpha*f_y + (1-alpha)*y
+    f_z = alpha*f_z + (1-alpha)*z
+
+    print("x=%s, y=%s, z=%s" % (f_x, f_y, f_z))
