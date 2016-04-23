@@ -83,6 +83,10 @@ while True:
     dy = dy + f_vy*dtime
     dz = dz + f_vz*dtime
 
+    f_x=round(f_x, 2)
+    f_y=round(f_y, 2)
+    f_z=round(f_z, 2)
+
     print("x=%s, y=%s, z=%s" % (dx, dy, dz))    
 
     lasttime = currtime
