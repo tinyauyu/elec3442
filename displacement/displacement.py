@@ -67,7 +67,7 @@ while True:
     dy = f_y-init_y
     dz = f_z-init_z
 
-    dtime = (currtime-lasttime)/1000000
+    dtime = (currtime-lasttime)/1000000.0
 
     vx = dx * dtime
     vy = dy * dtime
