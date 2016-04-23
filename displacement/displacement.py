@@ -16,22 +16,43 @@ from sense_hat import SenseHat
 
 sense = SenseHat()
 
+import time
+current_milli_time = lambda: int(round(time.time() * 1000))
+
 f_x, f_y, f_z = sense.get_accelerometer_raw().values()
-f_x=round(x, 0)
-f_y=round(y, 0)
-f_z=round(z, 0)
+lasttime = current_milli_time()
+
+f_x=round(f_x, 2)
+f_y=round(f_y, 2)
+f_z=round(f_z, 2)
+
+init_x = f_x
+init_y = f_y
+init_z = f_z
 
 alpha = 0.2
 
+vx = 0
+vy = 0
+vz = 0
+
+
 while True:
     x, y, z = sense.get_accelerometer_raw().values()
+    currtime = current_milli_time()
 
-    x=round(x, 0)
-    y=round(y, 0)
-    z=round(z, 0)
+    x=round(x, 2)
+    y=round(y, 2)
+    z=round(z, 2)
 
     f_x = alpha*f_x + (1-alpha)*x
     f_y = alpha*f_y + (1-alpha)*y
     f_z = alpha*f_z + (1-alpha)*z
 
-    print("x=%s, y=%s, z=%s" % (f_x, f_y, f_z))
+    f_x=round(f_x, 2)
+    f_y=round(f_y, 2)
+    f_z=round(f_z, 2)
+
+    print("x=%s, y=%s, z=%s" % (f_x - init_x, f_y - init_y, f_z - init_z))
+
+    
