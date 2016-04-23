@@ -79,9 +79,9 @@ while True:
 
     print("x=%s, y=%s, z=%s" % (f_vx, f_vy, f_vz))
 
-    dx = dx + vx*dtime
-    dy = dy + vy*dtime
-    dz = dz + vz*dtime
+    dx = dx + f_vx*dtime
+    dy = dy + f_vy*dtime
+    dz = dz + f_vz*dtime
 
     print("x=%s, y=%s, z=%s" % (dx, dy, dz))    
 
