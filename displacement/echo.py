@@ -10,14 +10,6 @@ GPIO.setup(ECHO,GPIO.IN)
 
 GPIO.output(TRIG, False)
 
-print "Waiting For Sensor To Settle"
-
-time.sleep(2)
-distance = getDistance(TRIG, ECHO)
-print "Distance:",distance,"cm"
-
-GPIO.cleanup()
-
 def getDistance(TRIG, ECHO):
 	GPIO.output(TRIG, True)
 	time.sleep(0.00001)
@@ -30,3 +22,11 @@ def getDistance(TRIG, ECHO):
 	distance = pulse_duration * 17150
 	distance = round(distance, 2)
 	return distance
+
+print "Waiting For Sensor To Settle"
+
+time.sleep(2)
+distance = getDistance(TRIG, ECHO)
+print "Distance:",distance,"cm"
+
+GPIO.cleanup()
