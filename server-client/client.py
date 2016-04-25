@@ -1,6 +1,6 @@
 import socket
 
-PORT = 12345
+PORT = 12346
 
 # create an INET, STREAMing socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
