@@ -156,5 +156,5 @@ def SerialGetThread():
 serial = threading.Thread(target=SerialGetThread, args=[])
 serial.start()
 
-def CollisionDetectionThread():
+# def CollisionDetectionThread():
     
