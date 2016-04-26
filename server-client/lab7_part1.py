@@ -77,9 +77,9 @@ def ServerThread ():
                 rr.left()
             elif msg[0] == "STOP":
                 rr.stop()
-    	elif msg[0] == "DIST":
-    	    distance = getDistance(TRIG, ECHO)
-    	    print("distance: %s" % str(dist))
+        	elif msg[0] == "DIST":
+        	    dist = getDistance(TRIG, ECHO)
+        	    print("distance: %s" % str(dist))
             else:
                 print("Message: %s" % msg)
         
