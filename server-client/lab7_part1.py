@@ -4,10 +4,69 @@ import socket
 from raspirobotboard import *
 
 import threading
+import serial
+
+###### Serial #####
+
+last_received = ''
+def receiving(ser):
+    global last_received
+    buffer = ''
+    while True:
+        buffer = buffer + ser.read(ser.inWaiting())
+        if '\n' in buffer:
+            lines = buffer.split('\n') # Guaranteed to have at least 2 entries
+            last_received = lines[-2]
+            #If the Arduino sends lots of empty lines, you'll lose the
+            #last filled line, so you could make the above statement conditional
+            #like so: if lines[-2]: last_received = lines[-2]
+            buffer = lines[-1]
+
+
+class SerialData(object):
+    def __init__(self, init=50):
+        try:
+            self.ser = ser = serial.Serial(
+                port='/dev/ttyUSB0',
+                baudrate=9600,
+                bytesize=serial.EIGHTBITS,
+                parity=serial.PARITY_NONE,
+                stopbits=serial.STOPBITS_ONE,
+                timeout=0.1,
+                xonxoff=0,
+                rtscts=0,
+                interCharTimeout=None
+            )
+        except serial.serialutil.SerialException:
+            #no serial connection
+            self.ser = None
+        else:
+            Thread(target=receiving, args=(self.ser,)).start()
+        
+    def next(self):
+        if not self.ser:
+            return 100 #return anything so we can test when Arduino isn't connected
+        #return a float value or try a few times until we get one
+        for i in range(40):
+            raw_line = last_received
+            try:
+                return float(raw_line.strip())
+            except ValueError:
+                print 'bogus data',raw_line
+                time.sleep(.005)
+        return 0.
+    def __del__(self):
+        if self.ser:
+            self.ser.close()
+
+
+###################
+
+PORT = 12346
 
 GPIO.setmode(GPIO.BCM)
-TRIG = 23
-ECHO = 24
+TRIG = 20
+ECHO = 21
 
 GPIO.setup(TRIG,GPIO.OUT)
 GPIO.setup(ECHO,GPIO.IN)
@@ -20,7 +79,10 @@ def getDistance(TRIG, ECHO):
     while GPIO.input(ECHO)==0:
         pulse_start = time.time()
     while GPIO.input(ECHO)==1:
-        pulse_end = time.time()     
+        pulse_end = time.time()
+        if(pulse_end - pulse_start > 5):
+            print("Unable to get echo!")
+            return -1
     pulse_duration = pulse_end - pulse_start
     distance = pulse_duration * 17150
     distance = round(distance, 2)
@@ -28,7 +90,6 @@ def getDistance(TRIG, ECHO):
 
 rr = RaspiRobot()
 
-PORT = 12346
 
 def ServerThread ():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -87,11 +148,14 @@ def ServerThread ():
 server = threading.Thread(target=ServerThread, args=[])
 server.start()
 
+def SerialGetThread():
+    s = SerialData()
+    while(True):
+        in_str = s.next()
+        print(in_str)
 
+serial = threading.Thread(target=SerialGetThread, args=[])
+serial.start()
 
-
-
-
-        
-
-
+def CollisionDetectionThread():
+    

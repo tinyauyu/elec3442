@@ -1,32 +1,21 @@
-import RPi.GPIO as GPIO
 import time
+import socket 
 
-GPIO.setmode(GPIO.BCM)
-TRIG = 23
-ECHO = 24
+import threading
 
-GPIO.setup(TRIG,GPIO.OUT)
-GPIO.setup(ECHO,GPIO.IN)
+PORT = 12346
 
-GPIO.output(TRIG, False)
+def Server1Thread ():
+    while(True):
+    	print("test1")
 
-def getDistance(TRIG, ECHO):
-	GPIO.output(TRIG, True)
-	time.sleep(0.00001)
-	GPIO.output(TRIG, False)
-	while GPIO.input(ECHO)==0:
-		pulse_start = time.time()
-	while GPIO.input(ECHO)==1:
-		pulse_end = time.time()     
-	pulse_duration = pulse_end - pulse_start
-	distance = pulse_duration * 17150
-	distance = round(distance, 2)
-	return distance
+        
+def Server2Thread ():
+    while(True):
+    	print("test2")
 
-print "Waiting For Sensor To Settle"
 
-time.sleep(2)
-distance = getDistance(TRIG, ECHO)
-print "Distance:",distance,"cm"
-
-GPIO.cleanup()
+server = threading.Thread(target=Server1Thread, args=[])
+server.start()
+server2 = threading.Thread(target=Server2Thread, args=[])
+server2.start()
