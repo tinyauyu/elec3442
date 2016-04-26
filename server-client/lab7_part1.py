@@ -6,8 +6,8 @@ from raspirobotboard import *
 import threading
 
 GPIO.setmode(GPIO.BCM)
-TRIG = 23
-ECHO = 24
+TRIG = 14
+ECHO = 15
 
 GPIO.setup(TRIG,GPIO.OUT)
 GPIO.setup(ECHO,GPIO.IN)
@@ -28,7 +28,7 @@ def getDistance(TRIG, ECHO):
 
 rr = RaspiRobot()
 
-PORT = 12346
+PORT = 12349
 
 def ServerThread ():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -47,6 +47,7 @@ def ServerThread ():
         con.send("Greetings from the server." .encode())
 
         while True:
+            print("waiting command...")
             msg = con.recv(1024).decode().split(" ")
             '''
             if msg[0] == "KILL":
@@ -81,17 +82,7 @@ def ServerThread ():
                 dist = getDistance(TRIG, ECHO)
                 print("distance: %s" % str(dist))
             else:
-                print("Message: %s" % msg)
-        
+                print("Message: %s" % msg)        
 
 server = threading.Thread(target=ServerThread, args=[])
 server.start()
-
-
-
-
-
-
-        
-
-
