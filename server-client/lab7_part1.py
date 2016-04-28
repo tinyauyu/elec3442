@@ -69,10 +69,13 @@ PORT = 12347
 GPIO.setmode(GPIO.BCM)
 TRIG = 14
 ECHO = 15
+ALARM = 23
 
 GPIO.setup(TRIG,GPIO.OUT)
+GPIO.setup(ALARM,GPIO.OUT)
 GPIO.setup(ECHO,GPIO.IN)
 GPIO.output(TRIG, False)
+GPIO.output(ALARM, False)
 
 def getDistance(TRIG, ECHO):
     GPIO.output(TRIG, True)
@@ -149,13 +152,25 @@ def ServerThread ():
 server = threading.Thread(target=ServerThread, args=[])
 server.start()
 
+def AlarmThread():
+    for i in range(20):
+        GPIO.output(ALARM, True)
+        time.sleep(0.3)
+        GPIO.output(ALARM, False)
+        time.sleep(0.3)
+
 def SerialGetThread():
 
     s = SerialData()
+    isAlarm = False
     while(True):
         in_str = s.next()
         print(in_str)
-	time.sleep(1)
+        alarmThd = threading.Thread(target=AlarmThread, arg=[])
+        if(in_str == "NOISE!" && isAlarm):
+            alarmThd.start()
+            isAlarm = False
+	time.sleep(0.05)
 
 serialThd = threading.Thread(target=SerialGetThread, args=[])
 serialThd.start()
