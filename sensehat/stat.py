@@ -1,4 +1,4 @@
-PORT = 12340
+PORT = 12321
 
 import socket
 import time
@@ -37,10 +37,12 @@ while True:
 
 		t = "TEMP " + str(temp)
 		s.send(t.encode())
+		time.sleep(0.1)
 		h = "HUMD " + str(humidity)
 		s.send(h.encode())
+		time.sleep(0.1)
 		p = "PRES " + str(pressure)
 		s.send(p.encode())
 		lastUpdate=currTime
 
-	
+

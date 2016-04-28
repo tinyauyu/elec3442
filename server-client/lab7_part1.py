@@ -1,4 +1,4 @@
-PORT = 12340
+PORT = 12321
 
 import RPi.GPIO as GPIO
 import time
@@ -198,5 +198,11 @@ def SerialGetThread():
 serialThd = threading.Thread(target=SerialGetThread, args=[])
 serialThd.start()
 
-# def CollisionDetectionThread():
-    
+def CollisionDetectionThread():
+    while True:
+        dist = getDistance(TRIG, ECHO)
+        if(dist<18):
+            rr.stop()
+        time.sleep(0.2)    
+collisionThd = threading.Thread(target=CollisionDetectionThread, args=[])
+collisionThd.start()
