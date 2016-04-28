@@ -8,6 +8,8 @@ from raspirobotboard import *
 from threading import Thread
 import threading
 import serial
+import json
+import datetime
 
 ###### Serial #####
 
@@ -157,6 +159,11 @@ def ServerThread ():
                 print("temperature: %s" % msg[1])
                 print("humidity: %s" % msg[2])
                 print("pressure: %s" % msg[3])
+                f = open("../html/RMCar/info.json", "w")
+                f.seek(0)
+                json_str = json.dumps({'temperature': msg[1], 'humidity': msg[2], 'pressure': msg[3], 'last_update': datetime.datetime.now()})
+                f.write(json_str)
+                f.close()
             elif msg[0] == "EXIT":
                 con.close()
                 break
