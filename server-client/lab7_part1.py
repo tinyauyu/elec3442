@@ -155,7 +155,7 @@ def SerialGetThread():
     while(True):
         in_str = s.next()
         print(in_str)
-	time.sleep(1)
+	time.sleep(0.05)
 
 serialThd = threading.Thread(target=SerialGetThread, args=[])
 serialThd.start()
