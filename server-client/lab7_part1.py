@@ -50,11 +50,10 @@ class SerialData(object):
         #return a float value or try a few times until we get one
         for i in range(40):
             raw_line = last_received
-            return raw_line
             try:
                 return float(raw_line.strip())
             except ValueError:
-                print 'bogus data',raw_line
+                return 'Noise'
                 time.sleep(.005)
         return 0.
     def __del__(self):
@@ -153,7 +152,7 @@ server = threading.Thread(target=ServerThread, args=[])
 server.start()
 
 def AlarmThread():
-    for i in range(20):
+    for i in range(5):
         GPIO.output(ALARM, True)
         time.sleep(0.3)
         GPIO.output(ALARM, False)
@@ -166,11 +165,11 @@ def SerialGetThread():
     while(True):
         in_str = s.next()
         print(in_str)
-        alarmThd = threading.Thread(target=AlarmThread, arg=[])
-        if(in_str == "NOISE!" && isAlarm):
-            alarmThd.start()
-            isAlarm = False
-	   time.sleep(0.05)
+	print(type(in_str))
+        if(type(in_str) is str):
+            print ">>>>>>>>>>>>>> ALARM <<<<<<<<<<<<<<<<"
+            AlarmThread()
+        time.sleep(0.05)
 
 serialThd = threading.Thread(target=SerialGetThread, args=[])
 serialThd.start()
