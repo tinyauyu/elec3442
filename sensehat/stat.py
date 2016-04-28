@@ -23,18 +23,24 @@ s.connect(('192.168.1.104', PORT))
 s.send('hihi'.encode())
 reply = s.recv(1024)
 
-while True:
-	temp = sense.get_temperature()
-	temp = round(temp,2)
-	humidity = sense.get_humidity()
-	humidity = round(humidity, 2)
-	pressure = sense.get_pressure()
-	pressure = round(pressure, 2)
+lastUpdate = time.time()
 
-	t = "TEMP " + str(temp)
-	s.send(t.encode())
-	h = "HUMD " + str(humidity)
-	s.send(h.encode())
-	p = "PRES " + str(pressure)
-	s.send(p.encode())
-	time.sleep(5) 
+while True:
+	currTime = time.time()
+	if(currTime-lastUpdate>5):
+		temp = sense.get_temperature()
+		temp = round(temp,2)
+		humidity = sense.get_humidity()
+		humidity = round(humidity, 2)
+		pressure = sense.get_pressure()
+		pressure = round(pressure, 2)
+
+		t = "TEMP " + str(temp)
+		s.send(t.encode())
+		h = "HUMD " + str(humidity)
+		s.send(h.encode())
+		p = "PRES " + str(pressure)
+		s.send(p.encode())
+		lastUpdate=currTime
+
+	
