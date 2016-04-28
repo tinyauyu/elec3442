@@ -1,3 +1,5 @@
+PORT = 12326
+
 import RPi.GPIO as GPIO
 import time
 import socket 
@@ -6,6 +8,8 @@ from raspirobotboard import *
 from threading import Thread
 import threading
 import serial
+import json
+import datetime
 
 ###### Serial #####
 
@@ -62,8 +66,6 @@ class SerialData(object):
 
 
 ###################
-
-PORT = 12347
 
 GPIO.setmode(GPIO.BCM)
 TRIG = 14
@@ -147,6 +149,30 @@ def ServerThread ():
             elif msg[0] == "DIST":
                 dist = getDistance(TRIG, ECHO)
                 print("distance: %s" % str(dist))
+            elif msg[0] == "TEMP":
+                print("temperature: %s" % msg[1])
+            elif msg[0] == "HUMD":  
+                print("humidity: %s" % msg[1])
+            elif msg[0] == "PRES":  
+                print("pressure: %s" % msg[1])
+            elif msg[0] == "ENVR":
+                print("temperature: %s" % msg[1])
+                print("humidity: %s" % msg[2])
+                print("pressure: %s" % msg[3])
+                f = open("../html/RMCar/info.json", "w")
+                f.seek(0)
+                json_str = json.dumps({'temperature': msg[1], 'humidity': msg[2], 'pressure': msg[3], 'last_update': str(datetime.datetime.now())})
+                f.write(json_str)
+                f.close()
+            elif msg[0] == "EXIT":
+                con.close()
+                break
+            elif msg[0] == "KILL":
+                print("Shutdown server.")
+                con.close()
+                server.close()
+                check=0
+                break
             else:
                 print("Message: %s" % msg)        
 
@@ -169,19 +195,22 @@ def SerialGetThread():
     lastAlarm = time.time()
     while(True):
         in_str = s.next()
-        print(in_str)
+        # print(in_str)
         if(type(in_str) is str) and (GPIO.input(TOUCH)==0):
-            print ">>>>>>>>>>>>>> ALARM <<<<<<<<<<<<<<<<"
+            # print ">>>>>>>>>>>>>> ALARM <<<<<<<<<<<<<<<<"
             try:
                 alarmThd.start()
                 lastAlarm = time.time()
             except:
                 if alarmThd.isAlive() == False:
                     alarmThd = threading.Thread(target=Alarm, args=[])
+
+        dist = getDistance(TRIG, ECHO)
+        if dist<18:
+            rr.stop()
+        if GPIO.input(TOUCH)==1:
+            rr.stop()
         time.sleep(0.1)
 
 serialThd = threading.Thread(target=SerialGetThread, args=[])
 serialThd.start()
-
-# def CollisionDetectionThread():
-    
