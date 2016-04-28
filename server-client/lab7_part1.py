@@ -151,7 +151,7 @@ def ServerThread ():
 server = threading.Thread(target=ServerThread, args=[])
 server.start()
 
-def AlarmThread():
+def Alarm():
     for i in range(5):
         GPIO.output(ALARM, True)
         time.sleep(0.3)
@@ -159,21 +159,22 @@ def AlarmThread():
         time.sleep(0.3)
 
 def SerialGetThread():
-
-    alarmThd = threading.Thread(target=AlarmThread, args=[])
+    alarmThd = threading.Thread(target=Alarm, args=[])
     s = SerialData()
     isAlarm = False
+    lastAlarm = time.time()
     while(True):
         in_str = s.next()
         print(in_str)
-	print(type(in_str))
         if(type(in_str) is str):
             print ">>>>>>>>>>>>>> ALARM <<<<<<<<<<<<<<<<"
             try:
                 alarmThd.start()
+                lastAlarm = time.time()
             except:
-                print "thread started already..."
-        time.sleep(0.05)
+                if alarmThd.isAlive() == False:
+                    alarmThd = threading.Thread(target=Alarm, args=[])
+        time.sleep(0.1)
 
 serialThd = threading.Thread(target=SerialGetThread, args=[])
 serialThd.start()
