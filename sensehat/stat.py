@@ -1,4 +1,4 @@
-PORT = 12323
+PORT = 12324
 
 import socket
 import time
@@ -35,14 +35,8 @@ while True:
 		pressure = sense.get_pressure()
 		pressure = round(pressure, 2)
 
-		t = "TEMP " + str(temp)
+		t = "ENVR " + str(temp) + " " + str(humidity) + " " + str(pressure)
 		s.send(t.encode())
-		time.sleep(0.1)
-		h = "HUMD " + str(humidity)
-		s.send(h.encode())
-		time.sleep(0.1)
-		p = "PRES " + str(pressure)
-		s.send(p.encode())
 		lastUpdate=currTime
 
 

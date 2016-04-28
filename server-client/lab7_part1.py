@@ -1,4 +1,4 @@
-PORT = 12323
+PORT = 12324
 
 import RPi.GPIO as GPIO
 import time
@@ -153,6 +153,10 @@ def ServerThread ():
                 print("humidity: %s" % msg[1])
             elif msg[0] == "PRES":  
                 print("pressure: %s" % msg[1])
+            elif msg[0] == "ENVR":
+                print("temperature: %s" % msg[1])
+                print("humidity: %s" % msg[2])
+                print("pressure: %s" % msg[3])
             elif msg[0] == "EXIT":
                 con.close()
                 break
