@@ -69,10 +69,12 @@ GPIO.setmode(GPIO.BCM)
 TRIG = 14
 ECHO = 15
 ALARM = 23
+TOUCH = 24
 
 GPIO.setup(TRIG,GPIO.OUT)
 GPIO.setup(ALARM,GPIO.OUT)
 GPIO.setup(ECHO,GPIO.IN)
+GPIO.setup(TOUCH,GPIO.IN)
 GPIO.output(TRIG, False)
 GPIO.output(ALARM, False)
 
@@ -153,6 +155,8 @@ server.start()
 
 def Alarm():
     for i in range(5):
+        if GPIO.input(TOUCH)==1:
+            return
         GPIO.output(ALARM, True)
         time.sleep(0.3)
         GPIO.output(ALARM, False)
@@ -168,12 +172,15 @@ def SerialGetThread():
         print(in_str)
         if(type(in_str) is str):
             print ">>>>>>>>>>>>>> ALARM <<<<<<<<<<<<<<<<"
-            try:
-                alarmThd.start()
-                lastAlarm = time.time()
-            except:
-                if alarmThd.isAlive() == False:
-                    alarmThd = threading.Thread(target=Alarm, args=[])
+            if GPIO.input(TOUCH)==1:
+                continue
+            else:
+                try:
+                    alarmThd.start()
+                    lastAlarm = time.time()
+                except:
+                    if alarmThd.isAlive() == False:
+                        alarmThd = threading.Thread(target=Alarm, args=[])
         time.sleep(0.1)
 
 serialThd = threading.Thread(target=SerialGetThread, args=[])
