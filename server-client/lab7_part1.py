@@ -155,9 +155,10 @@ def SerialGetThread():
     while(True):
         in_str = s.next()
         print(in_str)
+	time.sleep(1)
 
-serial = threading.Thread(target=SerialGetThread, args=[])
-serial.start()
+serialThd = threading.Thread(target=SerialGetThread, args=[])
+serialThd.start()
 
 # def CollisionDetectionThread():
     

@@ -3,6 +3,7 @@ Listen to serial, return most recent numeric values
 Lots of help from here:
 http://stackoverflow.com/questions/1093598/pyserial-how-to-read-last-line-sent-from-serial-device
 """
+import threading
 from threading import Thread
 import time
 import serial
@@ -59,7 +60,9 @@ class SerialData(object):
         if self.ser:
             self.ser.close()
 
-if __name__=='__main__':
+# if __name__=='__main__':
+
+def SerialThread():
     f = open('idle.txt','w')
     s = SerialData()
     while True:
@@ -69,3 +72,6 @@ if __name__=='__main__':
         f.write(str(in_num)) # python will convert \n to os.linesep
         f.write('\n')
     f.close() # you can omit in most cases as the destructor will call it
+
+serialThd = threading.Thread(target=SerialThread, args=[])
+serialThd.start()
