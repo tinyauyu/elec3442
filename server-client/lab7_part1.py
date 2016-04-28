@@ -147,6 +147,21 @@ def ServerThread ():
             elif msg[0] == "DIST":
                 dist = getDistance(TRIG, ECHO)
                 print("distance: %s" % str(dist))
+            elif msg[0] == "TEMP":
+                print("temperature: %s" % msg[1])
+            elif msg[0] == "HUMD":  
+                print("humidity: %s" % msg[1])
+            elif msg[0] == "PRES":  
+                print("pressure: %s" % msg[1])
+            elif msg[0] == "EXIT":
+                con.close()
+                break
+            elif msg[0] == "KILL":
+                print("Shutdown server.")
+                con.close()
+                server.close()
+                check=0
+                break
             else:
                 print("Message: %s" % msg)        
 
