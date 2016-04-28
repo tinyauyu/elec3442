@@ -63,7 +63,7 @@ class SerialData(object):
 
 ###################
 
-PORT = 12347
+PORT = 12340
 
 GPIO.setmode(GPIO.BCM)
 TRIG = 14
