@@ -48,6 +48,7 @@ class SerialData(object):
         #return a float value or try a few times until we get one
         for i in range(40):
             raw_line = last_received
+            return raw_line
             try:
                 return float(raw_line.strip())
             except ValueError:
@@ -61,7 +62,7 @@ class SerialData(object):
 if __name__=='__main__':
     f = open('idle.txt','w')
     s = SerialData()
-    for i in range(600):
+    while True:
         time.sleep(.1)
         in_num = s.next()
         print in_num
