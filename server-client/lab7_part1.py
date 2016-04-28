@@ -1,4 +1,4 @@
-PORT = 12321
+PORT = 12323
 
 import RPi.GPIO as GPIO
 import time
@@ -193,18 +193,13 @@ def SerialGetThread():
             except:
                 if alarmThd.isAlive() == False:
                     alarmThd = threading.Thread(target=Alarm, args=[])
-        time.sleep(0.1)
 
-serialThd = threading.Thread(target=SerialGetThread, args=[])
-serialThd.start()
-
-def CollisionDetectionThread():
-    while True:
         dist = getDistance(TRIG, ECHO)
         if dist<18:
             rr.stop()
         if GPIO.input(TOUCH)==1:
             rr.stop()
-        time.sleep(0.1)    
-collisionThd = threading.Thread(target=CollisionDetectionThread, args=[])
-collisionThd.start()
+        time.sleep(0.1)
+
+serialThd = threading.Thread(target=SerialGetThread, args=[])
+serialThd.start()
