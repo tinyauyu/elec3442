@@ -201,8 +201,10 @@ serialThd.start()
 def CollisionDetectionThread():
     while True:
         dist = getDistance(TRIG, ECHO)
-        if(dist<18):
+        if dist<18:
             rr.stop()
-        time.sleep(0.2)    
+        if GPIO.input(TOUCH)==1:
+            rr.stop()
+        time.sleep(0.1)    
 collisionThd = threading.Thread(target=CollisionDetectionThread, args=[])
 collisionThd.start()
