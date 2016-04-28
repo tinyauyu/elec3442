@@ -1,3 +1,5 @@
+PORT = 12340
+
 import RPi.GPIO as GPIO
 import time
 import socket 
@@ -62,8 +64,6 @@ class SerialData(object):
 
 
 ###################
-
-PORT = 12340
 
 GPIO.setmode(GPIO.BCM)
 TRIG = 14

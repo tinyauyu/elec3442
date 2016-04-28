@@ -1,5 +1,7 @@
-import socket
 PORT = 12340
+
+import socket
+import time
 
 from sense_hat import SenseHat
 sense = SenseHat()
