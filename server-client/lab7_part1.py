@@ -170,7 +170,7 @@ def SerialGetThread():
         if(in_str == "NOISE!" && isAlarm):
             alarmThd.start()
             isAlarm = False
-	time.sleep(0.05)
+	   time.sleep(0.05)
 
 serialThd = threading.Thread(target=SerialGetThread, args=[])
 serialThd.start()
