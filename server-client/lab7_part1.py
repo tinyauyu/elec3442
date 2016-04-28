@@ -170,17 +170,14 @@ def SerialGetThread():
     while(True):
         in_str = s.next()
         print(in_str)
-        if(type(in_str) is str):
+        if(type(in_str) is str and GPIO.input(TOUCH)==0:
             print ">>>>>>>>>>>>>> ALARM <<<<<<<<<<<<<<<<"
-            if GPIO.input(TOUCH)==1:
-                continue
-            else:
-                try:
-                    alarmThd.start()
-                    lastAlarm = time.time()
-                except:
-                    if alarmThd.isAlive() == False:
-                        alarmThd = threading.Thread(target=Alarm, args=[])
+            try:
+                alarmThd.start()
+                lastAlarm = time.time()
+            except:
+                if alarmThd.isAlive() == False:
+                    alarmThd = threading.Thread(target=Alarm, args=[])
         time.sleep(0.1)
 
 serialThd = threading.Thread(target=SerialGetThread, args=[])
