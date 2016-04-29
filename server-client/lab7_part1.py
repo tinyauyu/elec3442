@@ -159,9 +159,10 @@ def ServerThread ():
                 print("temperature: %s" % msg[1])
                 print("humidity: %s" % msg[2])
                 print("pressure: %s" % msg[3])
-                f = open("~/hihi/static/info.json", "w")
+                f = open("/home/pi/hihi/static/info.json", "w")
                 f.seek(0)
-                json_str = json.dumps({'temperature' : msg[1], 'humidity' : msg[2], 'pressure' : msg[3], 'last_update' : str(datetime.datetime.now())})
+                f.write("var info = ")
+                json_str = json.dumps({'temperature' : msg[1], 'humidity' : msg[2], 'pressure' : msg[3], 'dyaw' : msg[4], 'dx' : msg[5], 'dy' : msg[6], 'dz' : msg[7], 'last_update' : str(datetime.datetime.now())})
                 f.write(json_str)
                 f.close()
             elif msg[0] == "EXIT":
@@ -192,24 +193,35 @@ def SerialGetThread():
     alarmThd = threading.Thread(target=Alarm, args=[])
     s = SerialData()
     isAlarm = False
-    lastAlarm = time.time()
+    lastAlarm = -1;
     while(True):
         in_str = s.next()
         # print(in_str)
         if(type(in_str) is str) and (GPIO.input(TOUCH)==0):
             # print ">>>>>>>>>>>>>> ALARM <<<<<<<<<<<<<<<<"
+            lastAlarm = time.time()
             try:
                 alarmThd.start()
-                lastAlarm = time.time()
             except:
                 if alarmThd.isAlive() == False:
                     alarmThd = threading.Thread(target=Alarm, args=[])
-
+        
         dist = getDistance(TRIG, ECHO)
         if dist<18:
             rr.stop()
         if GPIO.input(TOUCH)==1:
             rr.stop()
+        dist = round(dist, 2)        
+
+        f = open("/home/pi/hihi/static/info2.json")
+        if(type(in_str) is str)==false:       
+            f.seek(0)
+            f.write("var info = ")
+            json_str = json.dumps({'current' : in_str, 'last_alarm' : lastAlarm, 'distance': str(dist), 'last_update' : str(datetime.datetime.now())})
+            f.write(json_str)
+            f.write("var isAlarm = false")
+        else:
+            f.write("isAlarm = true")
         time.sleep(0.1)
 
 serialThd = threading.Thread(target=SerialGetThread, args=[])
