@@ -20,16 +20,21 @@ current_milli_time = lambda: int(round(time.time() * 1000))
 
 iteration = 10
 
-f_x, f_y, f_z = sense.get_accelerometer_raw().values()
 lasttime = current_milli_time()
 
-f_x=round(f_x, 3)
-f_y=round(f_y, 3)
-f_z=round(f_z, 3)
+for i in range(1, iteration):
+        _x, _y, _z = sense.get_accelerometer_raw().values()
+        x = x + _x
+        y = y + _y
+        z = z + _z
+    
+    init_x=round(x*1.0 / iteration, 3)
+    init_y=round(y*1.0 / iteration, 3)
+    init_z=round(z*1.0 / iteration, 3)
 
-init_x = f_x
-init_y = f_y
-init_z = f_z
+init_x = round(init_x, 3)
+init_y = round(init_y, 3)
+init_z = round(init_z, 3)
 
 alpha = 0.1
 
@@ -62,7 +67,7 @@ while True:
     y=round(y*1.0 / iteration, 3)
     z=round(z*1.0 / iteration, 3)
 
-    print("x=%s, y=%s, z=%s" % (x, y, z))
+    print("x=%s, y=%s, z=%s" % (x - init_x, y-init_y, z-init_z))
 
     # f_x = alpha*f_x + (1-alpha)*x
     # f_y = alpha*f_y + (1-alpha)*y
