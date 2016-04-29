@@ -1,4 +1,4 @@
-PORT = 12312
+PORT = 12300
 
 import socket
 import time

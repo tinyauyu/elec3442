@@ -1,4 +1,4 @@
-PORT = 12313
+PORT = 12300
 
 import RPi.GPIO as GPIO
 import time
@@ -194,6 +194,7 @@ def SerialGetThread():
     s = SerialData()
     isAlarm = False
     lastAlarm = -1;
+    lastDist = getDistance(TRIG, ECHO)
     while(True):
         in_str = s.next()
         # print(in_str)
@@ -206,12 +207,14 @@ def SerialGetThread():
                 if alarmThd.isAlive() == False:
                     alarmThd = threading.Thread(target=Alarm, args=[])
         
-        dist = getDistance(TRIG, ECHO)
+        dist = getDistance(TRIG, ECHO) * 0.8 + lastDist * 0.2
+
         if dist<18:
             rr.stop()
         if GPIO.input(TOUCH)==1:
             rr.stop()
         dist = round(dist, 2)        
+        lastDist = dist
 
         f = open("/home/pi/hihi/static/info2.json")
         if(type(in_str) is str)==false:       
@@ -222,6 +225,7 @@ def SerialGetThread():
             f.write("var isAlarm = false")
         else:
             f.write("isAlarm = true")
+        f.close()
         time.sleep(0.1)
 
 serialThd = threading.Thread(target=SerialGetThread, args=[])
