@@ -1,4 +1,4 @@
-PORT = 12312
+PORT = 12313
 
 import RPi.GPIO as GPIO
 import time
