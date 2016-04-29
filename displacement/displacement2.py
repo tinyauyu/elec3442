@@ -1,4 +1,4 @@
-from math import sin, cos, radian
+from math import sin, cos, radians
 from sense_hat import SenseHat
 sense = SenseHat()
 
@@ -11,9 +11,9 @@ while True:
     _x, _y, _z = sense.get_accelerometer_raw().values()
     pitch, roll, yaw = sense.get_orientation().values()
     
-    p = radian(pitch)
-    r = radian(roll)
-    y = radian(yaw)
+    p = radians(pitch)
+    r = radians(roll)
+    y = radians(yaw)
 
     x = _x*cos(y)+_y*sin(y)+_x*cos(r)+_z*sin(r)
     y = _x*sin(y)+_y*cos(y)+_y*cos(p)+_z*sin(p)
