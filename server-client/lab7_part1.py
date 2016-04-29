@@ -1,4 +1,4 @@
-PORT = 12300
+PORT = 12307
 
 import RPi.GPIO as GPIO
 import time
@@ -181,6 +181,7 @@ server = threading.Thread(target=ServerThread, args=[])
 server.start()
 
 def Alarm():
+    return
     for i in range(5):
         if GPIO.input(TOUCH)==1:
             return
@@ -216,16 +217,17 @@ def SerialGetThread():
         dist = round(dist, 2)        
         lastDist = dist
 
-        f = open("/home/pi/hihi/static/info2.json")
-        if(type(in_str) is str)==false:       
-            f.seek(0)
-            f.write("var info = ")
+        if(type(in_str) is str)==False:       
+            f2 = open("/home/pi/hihi/static/info2.json", "w")
+            f2.seek(0,0)
+            f2.write("var info = ")
             json_str = json.dumps({'current' : in_str, 'last_alarm' : lastAlarm, 'distance': str(dist), 'last_update' : str(datetime.datetime.now())})
-            f.write(json_str)
-            f.write("var isAlarm = false")
+            f2.write(json_str + "\n")
+            f2.write("var isAlarm = false")
         else:
-            f.write("isAlarm = true")
-        f.close()
+            f2 = open("/home/pi/hihi/static/info2.json", "a+")
+            f2.write("\n"+"isAlarm = true")
+            f2.close()
         time.sleep(0.1)
 
 serialThd = threading.Thread(target=SerialGetThread, args=[])
