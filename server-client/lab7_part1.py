@@ -1,4 +1,4 @@
-PORT = 12312
+PORT = 12313
 
 import RPi.GPIO as GPIO
 import time
@@ -159,7 +159,7 @@ def ServerThread ():
                 print("temperature: %s" % msg[1])
                 print("humidity: %s" % msg[2])
                 print("pressure: %s" % msg[3])
-                f = open("~/hihi/static/info.json", "w")
+                f = open("/home/pi/hihi/static/info.json", "w")
                 f.seek(0)
                 json_str = json.dumps({'temperature' : msg[1], 'humidity' : msg[2], 'pressure' : msg[3], 'last_update' : str(datetime.datetime.now())})
                 f.write(json_str)
