@@ -1,73 +1,25 @@
-from sense_hat import SenseHat
-
-sense = SenseHat()
-
-##### Angle detection
-
-# init_pitch, init_roll, init_yaw = sense.get_orientation().values()
-
-# while True:
-#     pitch, roll, yaw = sense.get_orientation().values()
-#     print("pitch=%s, roll=%s, yaw=%s" % (pitch-init_pitch,yaw-init_yaw,roll-init_roll))
-
-
-##### Displacement detection
+from math import sin, cos, radian
 from sense_hat import SenseHat
 sense = SenseHat()
 
 import time
 current_milli_time = lambda: int(round(time.time() * 1000))
-
-iteration = 10
-
-lasttime = current_milli_time()
-
-for i in range(1, iteration):
-        _x, _y, _z = sense.get_accelerometer_raw().values()
-        x = x + _x
-        y = y + _y
-        z = z + _z
-    
-    init_x=round(x*1.0 / iteration, 3)
-    init_y=round(y*1.0 / iteration, 3)
-    init_z=round(z*1.0 / iteration, 3)
-
-init_x = round(init_x, 3)
-init_y = round(init_y, 3)
-init_z = round(init_z, 3)
-
-alpha = 0.1
-
-vx = 0
-vy = 0
-vz = 0
-
-f_vx = vx
-f_vy = vy
-f_vz = vz
-
-dx = 0
-dy = 0
-dz = 0
-
-
 while True:
-    x = 0
-    y = 0
-    z = 0
 
     currtime = current_milli_time()
-    for i in range(1, iteration):
-        _x, _y, _z = sense.get_accelerometer_raw().values()
-        x = x + _x
-        y = y + _y
-        z = z + _z
     
-    x=round(x*1.0 / iteration, 3)
-    y=round(y*1.0 / iteration, 3)
-    z=round(z*1.0 / iteration, 3)
+    _x, _y, _z = sense.get_accelerometer_raw().values()
+    pitch, roll, yaw = sense.get_orientation().values()
+    
+    p = radian(pitch)
+    r = radian(roll)
+    y = radian(yaw)
 
-    print("x=%s, y=%s, z=%s" % (x - init_x, y-init_y, z-init_z))
+    x = _x*cos(y)+_y*sin(y)+_x*cos(r)+_z*sin(r)
+    y = _x*sin(y)+_y*cos(y)+_y*cos(p)+_z*sin(p)
+    z = _x*sin(r)+_z*cos(r)+_y*sin(p)+_z*cos(p)
+
+    print("x=%s, y=%s, z=%s" % (x, y, z))
 
     # f_x = alpha*f_x + (1-alpha)*x
     # f_y = alpha*f_y + (1-alpha)*y
