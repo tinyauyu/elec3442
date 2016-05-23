@@ -12,6 +12,14 @@
 
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+		<script>
+			$(function(){
+				$.getJSON( "data.json", function( data ) {
+					$('#temperature').val(data.temperature);
+				});
+			})
+		</script>
 	</head>
 	<body style="padding: 20px; width: 1024px;">
 		<div class="page-header">
@@ -84,8 +92,24 @@
 		</div>
 
 		<div class="jumbotron" style="padding: 48px; padding-top:24px;">
-		  <h2>Remote Control</h2>
-		  
+			<h2>Remote Control</h2>
+			<table>
+				<tr>
+					<td></td>
+					<td><img id="upB" src="image/up.png"></img></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><img id="leftB" src="image/left.png"></img></td>
+					<td></td>
+					<td><img id="rightB" src="image/right.png"></img></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><img id="downB" src="image/down.png"></img></td>
+					<td></td>
+				</tr>
+			</table>
 		</div>
 
 	</body>
