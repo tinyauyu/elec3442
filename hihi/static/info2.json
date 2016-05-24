@@ -1,0 +1,7 @@
+var info = {"current": 1.59, "distance": "2825.4", "last_alarm": 1461911965.300467, "last_update": "2016-04-29 06:39:25.902726"}
+var isAlarm = false
+isAlarm = true
+isAlarm = true
+isAlarm = true
+isAlarm = true
+isAlarm = true

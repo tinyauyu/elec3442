@@ -1,0 +1,24 @@
+#up{
+	display : block;
+	margin : auto ;
+	width : 260px;
+	
+}
+
+#up,#middle,#down:hover{
+	cursor: pointer;
+}
+
+#middle{
+	display : block;
+	margin : auto;
+	width : 520px;
+	
+}
+
+#down{
+	display : block;
+	margin : auto;
+	width : 260px;
+}
+
