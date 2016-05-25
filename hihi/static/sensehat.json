@@ -1,0 +1,10 @@
+{
+	"temperature": 20,
+	"humidity": 80,
+	"pressure": 1000,
+	"angle": 180,
+	"dx": 3,
+	"dy": 4,
+	"dz": 5,
+	"current": 1.2
+}
