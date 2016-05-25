@@ -9,7 +9,7 @@ gpio.setup(touch,gpio.IN)
 
 try:
     while True:
-        if(GPIO.input(touch)==1):
+        if(gpio.input(touch)==1):
         	print("touched!")
         else:
         	print(".")

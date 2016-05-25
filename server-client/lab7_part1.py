@@ -70,7 +70,7 @@ class SerialData(object):
 GPIO.setmode(GPIO.BCM)
 TRIG = 14
 ECHO = 15
-ALARM = 23
+ALARM = 18
 TOUCH = 24
 
 GPIO.setup(TRIG,GPIO.OUT)
@@ -199,7 +199,7 @@ def SerialGetThread():
     while(True):
         in_str = s.next()
         # print(in_str)
-        if(type(in_str) is str) and (GPIO.input(TOUCH)==0):
+        if(in_str >= 240) and (GPIO.input(TOUCH)==0):
             # print ">>>>>>>>>>>>>> ALARM <<<<<<<<<<<<<<<<"
             lastAlarm = time.time()
             try:
@@ -212,16 +212,17 @@ def SerialGetThread():
 
         if dist<15:
             rr.stop()
+
         if GPIO.input(TOUCH)==1:
             rr.stop()
         dist = round(dist, 2)        
         lastDist = dist
 
-        if(type(in_str) is str)==False:       
+        if(in_str >= 240)==False:       
             f2 = open("./hihi/static/alarm.json", "w")
             f2.seek(0,0)
             f2.write("var info = ")
-            json_str = json.dumps({'current' : in_str, 'last_alarm' : lastAlarm, 'distance': str(dist), 'last_update' : str(datetime.datetime.now())})
+            json_str = json.dumps({'last_alarm' : lastAlarm, 'distance': str(dist), 'last_update' : str(datetime.datetime.now())})
             f2.write(json_str + "\n")
             f2.write("var isAlarm = false")
         else:

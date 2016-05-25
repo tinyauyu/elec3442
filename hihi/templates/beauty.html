@@ -37,6 +37,18 @@
 					console.log("run")
 					setTimeout(function() { update(); }, 500);
 				});
+				$.getJSON( "alarm.json", function( data ) {
+					$('#temperature').val(data.temperature);
+					$('#humidity').val(data.humidity);
+					$('#pressure').val(data.pressure);
+					$('#angle').val(data.angle);
+					$('#dx').val(data.dx);
+					$('#dy').val(data.dy);
+					$('#dz').val(data.dz);
+					$('#availability').val(data.availability);
+					console.log("run")
+					setTimeout(function() { update(); }, 500);
+				});
 			}
 			$(function(){
 				update();
