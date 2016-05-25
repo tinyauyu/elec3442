@@ -16,7 +16,7 @@
 		<script>
 			function postcommand(url){
 				$.ajax({
-				  type: "POST",
+				  type: "GET",
 				  url: url,
 				  success: function(){
 				  	console.log("command sent.")
@@ -25,7 +25,7 @@
 			}
 
 			function update(){
-				$.getJSON( "sensehat.json", function( data ) {
+				$.getJSON( "static/sensehat.json", function( data ) {
 					$('#temperature').val(data.temperature);
 					$('#humidity').val(data.humidity);
 					$('#pressure').val(data.pressure);
