@@ -14,8 +14,18 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 		<script>
+			function postcommand(url){
+				$.ajax({
+				  type: "POST",
+				  url: url,
+				  success: function(){
+				  	console.log("command sent.")
+				  },
+				});
+			}
+
 			function update(){
-				$.getJSON( "data.json", function( data ) {
+				$.getJSON( "sensehat.json", function( data ) {
 					$('#temperature').val(data.temperature);
 					$('#humidity').val(data.humidity);
 					$('#pressure').val(data.pressure);
@@ -23,7 +33,7 @@
 					$('#dx').val(data.dx);
 					$('#dy').val(data.dy);
 					$('#dz').val(data.dz);
-					$('#current').val(data.current);
+					$('#availability').val(data.availability);
 					console.log("run")
 					setTimeout(function() { update(); }, 500);
 				});
@@ -38,11 +48,20 @@
 		  <h1>Smart Chair <small>Control Panel</small></h1>
 		</div>
 
-		<div id="alert">
+		<div id="alert" class="hide">
 			<div class="alert alert-danger" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   				<strong>Warning!</strong> Burglar Alarm was triggered at <p id="time"></p>
 			</div>
+		</div>
+
+		<div class="jumbotron" style="padding:48px; padding-top:24px;">
+		  <h2>Availability</h2>
+		  	<label for="basic-url">Chair #1</label>
+			<div class="input-group">
+			  <input type="text" class="form-control" id="availability" aria-describedby="basic-addon3">
+			</div>
+
 		</div>
 
 		<div class="jumbotron" style="padding:48px; padding-top:24px;">
@@ -93,7 +112,7 @@
 			</div>
 		</div>
 
-		<div class="jumbotron" style="padding:48px; padding-top:24px;">
+		<div class="jumbotron hide" style="padding:48px; padding-top:24px;">
 		  <h2>USB Power Consumption</h2>
 		  	<label for="basic-url">Instantaneous Current</label>
 			<div class="input-group">
@@ -108,17 +127,17 @@
 			<table>
 				<tr>
 					<td></td>
-					<td><img id="upB" src="image/up.png"></img></td>
+					<td><a href="javascript:postcommand('/up-move/');"><img id="upB" src="image/up.png"></img></a></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><img id="leftB" src="image/left.png"></img></td>
-					<td></td>
-					<td><img id="rightB" src="image/right.png"></img></td>
+					<td><a href="javascript:postcommand('/up-move/');"><img id="leftB" src="image/left.png"></img></a></td>
+					<td><a href="javascript:postcommand('/stop-move/');"><span>STOP</span</a></td>
+					<td><a href="javascript:postcommand('/up-move/');"><img id="rightB" src="image/right.png"></img></a></td>
 				</tr>
 				<tr>
 					<td></td>
-					<td><img id="downB" src="image/down.png"></img></td>
+					<td><a href="javascript:postcommand('/up-move/');"><img id="downB" src="image/down.png"></img></a></td>
 					<td></td>
 				</tr>
 			</table>

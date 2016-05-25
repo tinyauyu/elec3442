@@ -1,7 +1,7 @@
 import time
 import RPi.GPIO as gpio
 
-buzzer = 21
+buzzer = 18
 
 gpio.setwarnings(False)
 gpio.setmode(gpio.BCM)

@@ -159,10 +159,10 @@ def ServerThread ():
                 print("temperature: %s" % msg[1])
                 print("humidity: %s" % msg[2])
                 print("pressure: %s" % msg[3])
-                f = open("/home/pi/hihi/static/info.json", "w")
+                f = open("./hihi/static/sensehat.json", "w")
                 f.seek(0)
                 f.write("var info = ")
-                json_str = json.dumps({'temperature' : msg[1], 'humidity' : msg[2], 'pressure' : msg[3], 'dyaw' : msg[4], 'dx' : msg[5], 'dy' : msg[6], 'dz' : msg[7], 'last_update' : str(datetime.datetime.now())})
+                json_str = json.dumps({'temperature' : msg[1], 'humidity' : msg[2], 'pressure' : msg[3], 'dyaw' : msg[4], 'dx' : msg[5], 'dy' : msg[6], 'dz' : msg[7], 'availability': not GPIO.input(TOUCH) , 'last_update' : str(datetime.datetime.now())})
                 f.write(json_str)
                 f.close()
             elif msg[0] == "EXIT":
@@ -210,7 +210,7 @@ def SerialGetThread():
         
         dist = getDistance(TRIG, ECHO) * 0.8 + lastDist * 0.2
 
-        if dist<18:
+        if dist<15:
             rr.stop()
         if GPIO.input(TOUCH)==1:
             rr.stop()
@@ -218,14 +218,14 @@ def SerialGetThread():
         lastDist = dist
 
         if(type(in_str) is str)==False:       
-            f2 = open("/home/pi/hihi/static/info2.json", "w")
+            f2 = open("./hihi/static/alarm.json", "w")
             f2.seek(0,0)
             f2.write("var info = ")
             json_str = json.dumps({'current' : in_str, 'last_alarm' : lastAlarm, 'distance': str(dist), 'last_update' : str(datetime.datetime.now())})
             f2.write(json_str + "\n")
             f2.write("var isAlarm = false")
         else:
-            f2 = open("/home/pi/hihi/static/info2.json", "a+")
+            f2 = open("./hihi/static/alarm.json", "a+")
             f2.write("\n"+"isAlarm = true")
             f2.close()
         time.sleep(0.1)
