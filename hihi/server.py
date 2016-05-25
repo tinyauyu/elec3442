@@ -26,12 +26,12 @@ def up_move():
 
 @app.route('/left-move/')
 def left_move():
-    rr.left()
+    rr.right()
 
 
 @app.route('/right-move/')
 def right_move():
-    rr.right()
+    rr.left()
 
 
 @app.route('/down-move/')

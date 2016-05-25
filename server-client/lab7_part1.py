@@ -198,7 +198,7 @@ def SerialGetThread():
     lastDist = getDistance(TRIG, ECHO)
     while(True):
         in_str = s.next()
-        # print(in_str)
+        print(in_str)
         if(in_str >= 240) and (GPIO.input(TOUCH)==0):
             # print ">>>>>>>>>>>>>> ALARM <<<<<<<<<<<<<<<<"
             lastAlarm = time.time()
